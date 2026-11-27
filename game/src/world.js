@@ -294,8 +294,15 @@ export function buildWorldMeshes(renderer) {
   renderer.upload('ring', toMeshData(ringBuilder));
 
   const marker = createBuilder();
-  marker.torus([0, 0, 0], 24, 1.1, PALETTE.ringGold, 30, 6);
-  marker.torus([0, 0, 0], 12, 0.6, PALETTE.ringGold, 24, 5);
+  // The drop zone is a circle painted on the ground: the game's own 210 m radius, drawn as a wide
+  // gold annulus with an inner hoop and a bullseye. A vertical torus a few metres across is
+  // invisible from the shallow angle an approach is flown at, which is why the mail screenshots
+  // had no gold in them at all. Built at the origin in the x-z plane so the draw list can place it
+  // on the drop point with placeAt, the same way every other item is positioned.
+  const dropRadius = dropPoint().radius;
+  marker.annulus([0, 0, 0], dropRadius, dropRadius - 8, PALETTE.ringGold, 64);
+  marker.annulus([0, 0, 0], dropRadius * 0.45, dropRadius * 0.45 - 5, PALETTE.ringGold, 48);
+  marker.annulus([0, 0, 0], 16, 9, PALETTE.ringGold, 32);
   renderer.upload('dropRing', toMeshData(marker));
 
   const puff = createBuilder();
@@ -397,7 +404,7 @@ export function collectSceneItems(state, time, propAngle, flight) {
     const drop = dropPoint();
     items.push({
       mesh: 'dropRing',
-      model: placeAt([drop.x, heightAt(drop.x, drop.z) + 3, drop.z], 0, 1),
+      model: placeAt([drop.x, heightAt(drop.x, drop.z) + 1.4, drop.z], 0, 1),
       emissive: 0.2 + Math.sin(time * 3.1) * 0.07,
       alpha: 0.9,
     });

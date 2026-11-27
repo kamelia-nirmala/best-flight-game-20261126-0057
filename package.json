@@ -1,0 +1,6 @@
+{
+  "name": "ashfall-courier",
+  "private": true,
+  "type": "module",
+  "description": "Ashfall Courier — a bush-pilot mail run over a live volcano (WebGL2, no dependencies)."
+}

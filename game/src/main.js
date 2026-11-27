@@ -11,7 +11,7 @@ import { createFlightState, checkTerrainCollision, stepFlight } from './flightMo
 import { createCamera, CAMERA_CHASE } from './camera.js';
 import { createInput, ACTION_CAMERA, ACTION_CONFIRM, ACTION_GEAR, ACTION_FLAPS, ACTION_PAUSE, ACTION_RESTART } from './input.js';
 import { createRenderer } from './renderer.js';
-import { collectSceneItems, createWorld, releaseMail, resetWorld, stepWorld } from './world.js';
+import { collectSceneItems, createWorld, buildWorldMeshes, releaseMail, resetWorld, stepWorld } from './world.js';
 import { dropPoint } from './terrain.js';
 import { drawHud, drawRunwayPointer } from './hud.js';
 import { drawPause, drawResult, drawTitle } from './screens.js';
@@ -35,6 +35,11 @@ const camera = createCamera();
 const flight = createFlightState();
 const world = createWorld();
 const input = createInput(window);
+
+// Upload every static mesh once, before the first frame. Nothing else calls this: without it the
+// renderer's mesh table stays empty, drawItem() returns early on every item, and each frame is only
+// the sky, the water and the HUD — which is exactly the bug the first four screenshots showed.
+buildWorldMeshes(renderer);
 
 // The two canvases share one 1280x720 logical frame; the drawing buffer follows the window so the
 // screenshots are crisp at any size the tool asks for.

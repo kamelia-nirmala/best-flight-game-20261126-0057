@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ashfall Courier — a bush-pilot mail run over a live volcano</title>
+<meta name="description" content="Fly a bush plane over the Kawah archipelago: six rings up the valley, a mail drop over the village, then a graded landing on the beach strip.">
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #0a0d13; }
+  canvas { display: block; }
+  #game { position: fixed; background: #0a0d13; }
+  #hud { position: fixed; pointer-events: none; }
+  #status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+</style>
+</head>
+<body>
+<canvas id="game" aria-label="Ashfall Courier: fly a bush plane through six rings, drop mail over the village, and land on the beach strip"></canvas>
+<canvas id="hud"></canvas>
+<p id="status" role="status" aria-live="polite"></p>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>

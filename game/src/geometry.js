@@ -152,6 +152,27 @@ export function createBuilder() {
     }
   }
 
+  /**
+   * A flat annulus lying in the x-z plane: a ring painted on the ground. The mail drop zone is a
+   * circle 210 m across, and seen from the air that is what it has to look like — a vertical hoop
+   * a few metres wide reads as a sliver from a shallow approach angle and vanishes entirely.
+   */
+  function annulus(center, outer, inner, color, segments = 48) {
+    for (let i = 0; i < segments; i += 1) {
+      const a = (i / segments) * Math.PI * 2;
+      const b = ((i + 1) / segments) * Math.PI * 2;
+      const ca = Math.cos(a);
+      const sa = Math.sin(a);
+      const cb = Math.cos(b);
+      const sb = Math.sin(b);
+      const oa = [center[0] + ca * outer, center[1], center[2] + sa * outer];
+      const ob = [center[0] + cb * outer, center[1], center[2] + sb * outer];
+      const ia = [center[0] + ca * inner, center[1], center[2] + sa * inner];
+      const ib = [center[0] + cb * inner, center[1], center[2] + sb * inner];
+      quad(ia, ib, ob, oa, color, [0, 1, 0]);
+    }
+  }
+
   /** A flat rectangle in the x-z plane, given a centre, a heading and half extents. */
   function slab(center, halfWidth, halfLength, heading, color, lift = 0) {
     const c = Math.cos(heading);
@@ -177,6 +198,7 @@ export function createBuilder() {
     cylinder,
     torus,
     disc,
+    annulus,
     slab,
     merge,
     get vertexCount() {

@@ -290,9 +290,14 @@ export function buildTerrainMesh(builder) {
     const cr = (colors[ia] + colors[ib] + colors[ic]) / 3;
     const cg = (colors[ia + 1] + colors[ib + 1] + colors[ic + 1]) / 3;
     const cb = (colors[ia + 2] + colors[ib + 2] + colors[ic + 2]) / 3;
+    // The indices matter as much as the vertices: a mesh with vertices but no index list draws
+    // nothing at all, because the renderer calls drawElements with an index count of zero. Without
+    // these three lines the island has geometry in memory and never a pixel on screen.
+    const base = builder.vertexCount;
     builder.push([ax, ay, az], [nx, ny, nz], [cr, cg, cb]);
     builder.push([bx, by, bz], [nx, ny, nz], [cr, cg, cb]);
     builder.push([cx, cy, cz], [nx, ny, nz], [cr, cg, cb]);
+    builder.indices.push(base, base + 1, base + 2);
   }
 }
 

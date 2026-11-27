@@ -63,10 +63,16 @@ export function createCamera() {
       const cp = Math.cos(flight.pitch);
       const sp = Math.sin(flight.pitch);
       const fwd = [Math.sin(flight.heading) * cp, sp, -Math.cos(flight.heading) * cp];
+      // The eye has to clear the airframe. The mesh runs from z = -4.86 to +4.50 and up to y = 2.01,
+      // so an eye 2.05 m forward and 0.58 m up sat *inside* the fuselage: the windscreen filled with
+      // the interior's back faces and half the frame was cream hull. Sitting just above the canopy
+      // and a little behind the nose looks over the cowling at the valley, the way the shot wants.
+      const eyeUp = 2.32;
+      const eyeAhead = 1.30;
       state.eye = [
-        flight.position[0] + fwd[0] * 2.05,
-        flight.position[1] + fwd[1] * 2.05 + 0.58,
-        flight.position[2] + fwd[2] * 2.05,
+        flight.position[0] + fwd[0] * eyeAhead,
+        flight.position[1] + fwd[1] * eyeAhead + eyeUp,
+        flight.position[2] + fwd[2] * eyeAhead,
       ];
       state.target = [
         state.eye[0] + fwd[0] * 80,
